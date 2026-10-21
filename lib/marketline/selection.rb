@@ -8,7 +8,7 @@ module Marketline
     RANGES = {
       '1d' => Range.new('1D', '1D', '1'),
       '5d' => Range.new('5D', '5D', '5'),
-      '1w' => Range.new('1W', '1W', '15'),
+      '1w' => Range.new('1W', '7D', '15'),
       '1m' => Range.new('1M', '1M', '60'),
       '1y' => Range.new('1Y', '12M', 'D')
     }.freeze

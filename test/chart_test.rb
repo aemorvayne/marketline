@@ -17,4 +17,9 @@ class ChartTest < Minitest::Test
     refute options.fetch(:allow_symbol_change)
     refute options.fetch(:hide_side_toolbar)
   end
+
+  def test_one_week_uses_the_provider_supported_day_range
+    selection = Marketline::Selection.new('range' => '1w')
+    assert_equal '7D', Marketline::Chart.new(selection).options.fetch(:range)
+  end
 end

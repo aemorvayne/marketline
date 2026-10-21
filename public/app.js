@@ -26,21 +26,21 @@ function observeChart(container, timeout) {
   const observer = new MutationObserver(() => {
     const frame = container.querySelector("iframe");
     if (!frame) return;
-    frame.title = "Interactive stock price chart by TradingView";
-    frame.addEventListener("load", () => {
-      clearTimeout(timeout);
-      setChartStatus("Use the chart toolbar for indicators, drawing tools, and more. If data is unavailable, open the stock on TradingView.");
-    });
+    initializeChartFrame(frame, timeout);
     observer.disconnect();
   });
   observer.observe(container, { childList: true, subtree: true });
 }
 
-function initializeChart() {
-  const container = document.querySelector(".chart-frame");
-  if (!container) return;
-  const timeout = setTimeout(showChartDelay, CHART_LOAD_TIMEOUT_MS);
-  observeChart(container, timeout);
+function initializeChartFrame(frame, timeout) {
+  frame.title = "Interactive stock price chart by TradingView";
+  frame.addEventListener("load", () => {
+    clearTimeout(timeout);
+    setChartStatus("Use the chart toolbar for indicators, drawing tools, and more. If data is unavailable, open the stock on TradingView.");
+  });
+}
+
+function appendChartScript(container, timeout) {
   const script = document.createElement("script");
   script.src = container.dataset.chartSrc;
   script.async = true;
@@ -50,6 +50,14 @@ function initializeChart() {
     showChartDelay();
   });
   container.querySelector(".tradingview-widget-container").append(script);
+}
+
+function initializeChart() {
+  const container = document.querySelector(".chart-frame");
+  if (!container) return;
+  const timeout = setTimeout(showChartDelay, CHART_LOAD_TIMEOUT_MS);
+  observeChart(container, timeout);
+  appendChartScript(container, timeout);
 }
 
 function showChartDelay() {

@@ -28,7 +28,7 @@ class SelectionTest < Minitest::Test
   end
 
   def test_required_ranges
-    { '1d' => '1D', '5d' => '5D', '1w' => '1W', '1m' => '1M', '1y' => '12M' }.each do |key, period|
+    { '1d' => '1D', '5d' => '5D', '1w' => '7D', '1m' => '1M', '1y' => '12M' }.each do |key, period|
       assert_equal period, Marketline::Selection.new('range' => key).range.period
     end
   end
