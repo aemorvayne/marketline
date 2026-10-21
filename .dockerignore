@@ -1,0 +1,11 @@
+.git
+.github
+.agents
+.bundle
+.env*
+coverage
+test
+tmp
+log
+vendor/bundle
+.DS_Store

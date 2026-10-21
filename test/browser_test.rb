@@ -90,7 +90,7 @@ class BrowserTest < BrowserTestCase
     assert_no_browser_errors
   end
 
-  def test_error_page_has_no_javascript_errors
+  def test_error_page_returns_to_the_explorer
     visit '/?symbol=missing'
     assert_selector 'h1', text: 'That view isn’t available'
     click_link 'Back to the stock explorer'

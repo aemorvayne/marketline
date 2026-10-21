@@ -55,6 +55,15 @@ class AppTest < Minitest::Test
     end
   end
 
+  def test_invalid_selections_do_not_log_server_errors
+    production_app = Class.new(Marketline::App)
+    production_app.set :dump_errors, true
+    error_output = StringIO.new
+    response = Rack::MockRequest.new(production_app).get('/?symbol=missing', 'rack.errors' => error_output)
+    assert response.bad_request?
+    assert_empty error_output.string
+  end
+
   def test_nested_parameters_are_rejected
     get '/?symbol[]=NASDAQ:AAPL'
     assert last_response.bad_request?

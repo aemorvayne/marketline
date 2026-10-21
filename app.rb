@@ -18,15 +18,14 @@ module Marketline
       @selection = Selection.new(params)
       @chart = Chart.new(@selection)
       erb :index
+    rescue Selection::Invalid => error
+      status Rack::Utils::SYMBOL_TO_STATUS_CODE.fetch(:bad_request)
+      @message = error.message
+      erb :error
     end
     get '/health' do
       content_type :json
       JSON.generate(status: 'ok')
-    end
-    error Selection::Invalid do
-      status Rack::Utils::SYMBOL_TO_STATUS_CODE.fetch(:bad_request)
-      @message = env.fetch('sinatra.error').message
-      erb :error
     end
     not_found do
       @message = 'This page could not be found. Return to the explorer to choose a stock.'

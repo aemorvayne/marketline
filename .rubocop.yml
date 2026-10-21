@@ -13,6 +13,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
 Layout/EmptyLinesAroundMethodBody:
   Enabled: true
 
