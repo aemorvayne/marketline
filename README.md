@@ -31,6 +31,6 @@ docker build -t marketline .
 docker run --rm -p 9292:9292 marketline
 ```
 
-On a container host, build the root `Dockerfile` and set the health check to `/health`. The app honors `PORT` (default `9292`); `MAX_THREADS` defaults to `3`. The image already uses production settings.
+To host it on [Render](https://dashboard.render.com/web/new), create a web service from this GitHub repository's `main` branch, choose **Docker** and the **Free** plan, and set the health check to `/health`. Render supplies `PORT` automatically; the image already uses production settings. Free services sleep after 15 minutes of inactivity, so the first visit may take a moment.
 
 Also built with Ruby: [LCM Service](https://github.com/aemorvayne/lcm-service), a tiny HTTP calculator.
