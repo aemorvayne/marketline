@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <meta name="description" content="Explore stock prices with searchable symbols and interactive market charts.">
+    <title>Marketline · Stock explorer</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/vendor/tom-select.css">
+    <link rel="stylesheet" href="/app.css">
+    <script src="/vendor/tom-select.js" defer></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Marketline home">
+        <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="m7 21 6-7 4 3 8-9M20 8h5v5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        marketline<span class="brand-dot">.</span>
+      </a>
+      <span class="header-caption">A clearer view of the market</span>
+      <span class="header-label">STOCK EXPLORER</span>
+    </header>
+    <main id="main"><%= yield %></main>
+    <footer class="site-footer">
+      <span>Made for a little more perspective.</span>
+      <span>Market data & charts by <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView ↗</a></span>
+    </footer>
+  </body>
+</html>

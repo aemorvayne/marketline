@@ -1,0 +1,71 @@
+<section class="intro" aria-labelledby="page-title">
+  <div>
+    <p class="eyebrow"><span class="eyebrow-line"></span> FOLLOW YOUR CURIOSITY</p>
+    <h1 id="page-title">Every stock has a story.</h1>
+    <p class="intro-copy">Find a company. Explore the chart. See the bigger picture.</p>
+  </div>
+  <span class="intro-note">One place.<br>A world of movement.</span>
+</section>
+<section class="explorer" aria-label="Stock explorer">
+  <div class="search-section">
+    <form action="/" method="get" id="stock-form">
+      <label for="symbol">Find a stock <span>Search by company or ticker</span></label>
+      <div class="search-row">
+        <select name="symbol" id="symbol" aria-describedby="search-help">
+          <% Marketline::Catalog::STOCKS.each do |stock| %>
+            <option value="<%= escape(stock.fetch('symbol')) %>" <%= 'selected' if stock == @selection.stock %>><%= escape("#{stock.fetch('ticker')} · #{stock.fetch('name')} · #{stock.fetch('exchange')}") %></option>
+          <% end %>
+        </select>
+        <input type="hidden" name="range" value="<%= escape(@selection.range_key) %>">
+        <input type="hidden" name="style" value="<%= escape(@selection.style_key) %>">
+        <button class="search-submit" type="submit">View chart <span aria-hidden="true">↗</span></button>
+      </div>
+      <p id="search-help" class="search-help">Explore <%= Marketline::Catalog::STOCKS.length %> selected US-listed stocks. Choose a suggestion to open its chart.</p>
+    </form>
+    <nav class="featured" aria-label="Quick picks">
+      <span>QUICK PICKS</span>
+      <% Marketline::Catalog.featured.each do |stock| %>
+        <a href="<%= escape(@selection.path(symbol: stock.fetch('symbol'))) %>" <%= 'aria-current="true"' if stock == @selection.stock %>><%= escape(stock.fetch('ticker')) %></a>
+      <% end %>
+    </nav>
+  </div>
+  <section class="chart-section" id="chart" aria-labelledby="stock-name">
+    <div class="chart-heading">
+      <div class="stock-identity">
+        <span class="stock-monogram" aria-hidden="true"><%= escape(@selection.stock.fetch('ticker')) %></span>
+        <div>
+          <p class="stock-meta"><%= escape(@selection.stock.fetch('exchange')) %> <span> / </span> <%= escape(@selection.stock.fetch('ticker')) %></p>
+          <h2 id="stock-name"><%= escape(@selection.stock.fetch('name')) %></h2>
+        </div>
+      </div>
+      <a class="source-link" href="<%= escape(@selection.provider_url) %>" target="_blank" rel="noopener noreferrer">Open on TradingView <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="chart-controls">
+      <nav class="range-controls" aria-label="Date range">
+        <% Marketline::Selection::RANGES.each do |key, range| %>
+          <a href="<%= escape(@selection.path(range: key)) %>" <%= 'aria-current="true"' if key == @selection.range_key %> aria-label="<%= escape(range.label) %> date range"><%= escape(range.label) %></a>
+        <% end %>
+      </nav>
+      <nav class="style-controls" aria-label="Chart style">
+        <% Marketline::Selection::STYLES.each_key do |key| %>
+          <a href="<%= escape(@selection.path(style: key)) %>" <%= 'aria-current="true"' if key == @selection.style_key %>><%= escape(key.capitalize) %></a>
+        <% end %>
+      </nav>
+    </div>
+    <div class="chart-frame" data-chart-src="<%= Marketline::Chart::PROVIDER_SCRIPT %>">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright"><a href="<%= escape(@selection.provider_url) %>" rel="noopener nofollow" target="_blank"><%= escape(@selection.stock.fetch('ticker')) %> stock chart</a> by TradingView</div>
+      </div>
+      <script type="application/json" id="chart-options"><%= JSON.generate(@chart.options) %></script>
+    </div>
+    <p class="chart-status" id="chart-status" role="status">Loading the interactive chart…</p>
+    <noscript><p class="chart-notice">JavaScript is needed for the interactive chart and autocomplete. You can still choose stocks above or <a href="<%= escape(@selection.provider_url) %>">view this stock on TradingView</a>.</p></noscript>
+    <div class="chart-caption"><span><span class="data-dot" aria-hidden="true"></span> Market data may be delayed</span><span>Prices shown in USD · Exchange time</span></div>
+  </section>
+</section>
+<aside class="tips" aria-label="Chart tips">
+  <div><span class="tip-number">01</span><p><strong>Start with a name</strong><span>Search a company or try a quick pick.</span></p></div>
+  <div><span class="tip-number">02</span><p><strong>Change your perspective</strong><span>Switch ranges, zoom, or try candlesticks.</span></p></div>
+  <div><span class="tip-number">03</span><p><strong>Make it your own</strong><span>Add indicators using the chart toolbar.</span></p></div>
+</aside>

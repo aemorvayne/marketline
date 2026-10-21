@@ -1,0 +1,11 @@
+Tom Select 2.6.2
+https://tom-select.js.org/
+https://github.com/orchidjs/tom-select
+
+Licensed under the Apache License, Version 2.0. See TOM_SELECT_LICENSE.txt.
+
+Source distribution:
+https://cdn.jsdelivr.net/npm/tom-select@2.6.2/dist/js/tom-select.base.min.js
+https://cdn.jsdelivr.net/npm/tom-select@2.6.2/dist/css/tom-select.default.min.css
+
+The license banner is reproduced here instead of as a code comment. Source-map references were removed because source maps are not distributed. The library's executable code and CSS are otherwise unchanged.

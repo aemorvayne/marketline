@@ -9,4 +9,5 @@ end
 
 require 'minitest/autorun'
 require 'rack/test'
+require 'nokogiri'
 require_relative '../app'
