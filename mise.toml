@@ -1,9 +1,18 @@
 [tools]
 ruby = "4.0.7"
+gitleaks = "8.30.1"
 
 [tasks.setup]
 description = "Install the locked Ruby dependencies"
-run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle install"
+run = ["\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle install", "git config core.hooksPath .githooks"]
+
+[tasks.privacy-staged]
+description = "Scan staged changes for secrets, personal contacts, and private files"
+run = "gitleaks git --staged --redact --no-banner --ignore-gitleaks-allow ."
+
+[tasks.privacy]
+description = "Scan complete Git history and staged changes before publication"
+run = ["gitleaks git --log-opts=--all --redact --no-banner --ignore-gitleaks-allow .", "mise run privacy-staged"]
 
 [tasks.dev]
 description = "Start the local web server"
@@ -27,4 +36,4 @@ run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec rubocop --autoc
 
 [tasks.check]
 description = "Run all automated checks without changing source files"
-depends = ["lint", "format-check", "test"]
+depends = ["lint", "format-check", "test", "privacy"]

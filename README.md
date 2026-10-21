@@ -39,26 +39,35 @@ mise run test
 mise run lint
 mise run format-check
 mise run format
+mise run privacy
 ```
 
-`check` runs tests, lint, and formatting checks without changing source files. `format` applies safe formatting fixes. Test coverage is written to `coverage/index.html`. CI runs the same mise tasks on pushes and pull requests, plus a production container build and HTTP smoke checks. Ruby tests cover the stock catalog, defaults, each range and style, URL state, invalid and structured input, rendered controls, escaping, error pages, health checks, and static assets.
+`check` runs tests, lint, formatting, and privacy checks without changing source files. `format` applies safe formatting fixes. Test coverage is written to `coverage/index.html`. CI runs the same mise tasks on pushes and pull requests, plus a production container build and HTTP smoke checks. Ruby tests cover the stock catalog, defaults, each range and style, URL state, invalid and structured input, rendered controls, escaping, error pages, health checks, and static assets.
 
 Browser tests use Capybara and headless Chrome through Selenium. Install Google Chrome or Chromium before running the suite. Selenium Manager obtains a compatible driver on first use, which may require internet access. The browser suite covers company/ticker autocomplete, keyboard selection, no results, quick picks, state preservation, mobile widths, provider failures and timeouts, and native form fallbacks when JavaScript or the autocomplete library is unavailable. The timeout test deliberately waits through the application's loading deadline. Tests replace the external chart with a local provider double and block external HTTPS requests, so market-data outages do not break CI. Live-provider smoke checks are separate and are not represented as deterministic test coverage.
+
+## Public repository hygiene
+
+`mise run setup` enables local Git hooks. The commit hook scans staged changes with pinned Gitleaks rules; the push hook and CI also scan the complete Git history. Findings are redacted. Run `mise run privacy` before publishing. These checks detect supported credential formats, non-example email addresses, and private file paths; they do not guarantee that all personal or confidential information is detected.
+
+Keep original briefs, contact datasets, private notes, environment files, credentials, and unsanitized backups outside the repository and Docker build context. Use generated data and reserved example domains in public fixtures. Store deployment secrets in the host's secret store. Review documentation, commit metadata, screenshots, and artifacts before sharing them.
+
+Related project: [LCM Service](https://github.com/aemorvayne/lcm-service).
 
 ## Configuration and deployment
 
 `PORT` selects the listening port, defaulting to `9292`. `MAX_THREADS` selects Puma's thread count, defaulting to `3`. Set `RACK_ENV=production` when deploying. No secrets or environment file are required.
 
-Build the repository's multi-stage `Dockerfile`. Its runtime contains only production dependencies and runs as an unprivileged user. Configure the health check at `/health`. The server binds to all interfaces and honors the host's assigned `PORT`.
+The repository's multi-stage `Dockerfile` works with container hosts such as Render, Koyeb, and Fly.io. Its runtime contains only production dependencies and runs as an unprivileged user. The server binds to all interfaces and honors the host's assigned `PORT`. Configure an HTTP health check at `/health`; no database or volume is needed.
 
 To deploy from GitHub:
 
-1. Create a Docker web service using this repository as the source.
-2. Deploy from the repository root using its Dockerfile; no database or volume is needed.
-3. Generate a public domain in the service's networking settings.
+1. Connect the hosting provider to this repository and select the `main` branch.
+2. Choose a Docker web service and build from the repository root using `Dockerfile`.
+3. Configure `/health`, enable deployment after successful CI checks where supported, and generate a public domain.
 4. Confirm `/health` returns HTTP 200 and the root page loads the external chart on desktop and mobile before sharing the public URL.
 
-
+Render supports [Docker builds](https://render.com/docs/docker) and [deploying after CI checks pass](https://render.com/docs/deploys).
 
 To check the production container locally:
 
@@ -67,4 +76,4 @@ docker build -t marketline .
 docker run --rm -p 9292:9292 -e PORT=9292 marketline
 ```
 
-The public deployment URL must come from a completed deployment. Source code and deployment files alone do not satisfy the public access requirement.
+No hosted deployment URL is configured yet.
