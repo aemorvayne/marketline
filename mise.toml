@@ -1,0 +1,30 @@
+[tools]
+ruby = "4.0.7"
+
+[tasks.setup]
+description = "Install the locked Ruby dependencies"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle install"
+
+[tasks.dev]
+description = "Start the local web server"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec puma -C config/puma.rb"
+
+[tasks.test]
+description = "Run Ruby and browser tests with coverage"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec rake test"
+
+[tasks.lint]
+description = "Check Ruby code quality"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec rubocop --lint"
+
+[tasks.format-check]
+description = "Check Ruby formatting without changing files"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec rubocop --except Lint"
+
+[tasks.format]
+description = "Apply safe Ruby formatting corrections"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec rubocop --autocorrect --except Lint"
+
+[tasks.check]
+description = "Run all automated checks without changing source files"
+depends = ["lint", "format-check", "test"]
