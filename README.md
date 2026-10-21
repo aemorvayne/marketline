@@ -2,6 +2,8 @@
 
 A small stock explorer built with Ruby and Sinatra. Find a company by name or ticker, switch between candles and an area chart, and explore anything from a single day to a year.
 
+[Open Marketline](https://marketline-y48p.onrender.com).
+
 Choose from 48 US-listed stocks. [TradingView](https://www.tradingview.com/) provides the charts, drawing tools, and indicators; market data may be delayed. Your stock, range, and chart style stay in the URL, so you can share the view.
 
 ## Try it locally
